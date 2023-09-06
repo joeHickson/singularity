@@ -160,6 +160,5 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-RUN 
 
 CMD ["python2"]
