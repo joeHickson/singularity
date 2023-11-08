@@ -16,9 +16,23 @@ RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.n
       http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-8-6.el8.noarch.rpm \
  	&& dnf -y --setopt=install_weak_deps=False --setopt=tsflags=nodocs install epel-release \
  	&& dnf config-manager --set-enabled powertools \
-	&& yum install -y graphviz sqlite python2-pip python2-jinja2  gcc make wget pygtk2 graphviz-devel python2-devel python2-requests \
-	&& pip2 install pygraphviz "pyOpenSSL<19.1" \
-	&& dnf remove -y gcc
+	&& yum install -y \
+						graphviz \
+						sqlite \
+						python2-pip \
+						python2-jinja2  \
+						gcc \
+						make \
+						wget \
+						pygtk2 \
+						graphviz-devel \
+						python2-devel \
+						python2-requests \
+	&& pip2 install \
+						pygraphviz \
+						"pyOpenSSL<19.1" \
+	&& dnf remove -y \
+						gcc
 # install rose and cylc
 RUN wget -O cylc.tar.gz "https://github.com/cylc/cylc-flow/archive/refs/tags/7.9.8.tar.gz" \
 	&& mkdir -p /usr/src/cylc \
