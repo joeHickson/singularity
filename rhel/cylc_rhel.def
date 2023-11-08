@@ -21,14 +21,14 @@ From: redhat/ubi8:latest
 		graphviz-devel \
 		python2-devel \
 		python2-requests
-    pip2 install \
+    pip2 install --user \
 		pygraphviz \
-		"pyOpenSSL<19.1
+		"pyOpenSSL<19.1"
     dnf remove -y \
 		gcc
     # install cylc and rose
-    wget -O cylc.tar.gz "https://github.com/cylc/cylc-flow/archive/refs/tags/7.9.8.tar.gz
-    wget -O rose.tar.gz "https://github.com/metomi/rose/archive/refs/tags/2019.01.8.tar.gz
+    wget -O cylc.tar.gz "https://github.com/cylc/cylc-flow/archive/refs/tags/7.9.8.tar.gz"
+    wget -O rose.tar.gz "https://github.com/metomi/rose/archive/refs/tags/2019.01.8.tar.gz"
     mkdir -p /metomi/cylc
     tar -xzC /metomi/cylc --strip-components=1 -f cylc.tar.gz
     rm cylc.tar.gz
@@ -37,12 +37,13 @@ From: redhat/ubi8:latest
     rm rose.tar.gz
     cd /metomi/cylc
     make version
+    export PATH=/metomi/rose/bin:/metomi/cylc/bin:$PATH
 
 %test
     cylc check-software
 
 %environment
-    export PATH=/metomi/rose:/metomi/cylc:$PATH
+    export PATH=/metomi/rose/bin:/metomi/cylc/bin:$PATH
 
 %runscript
     rose edit $*
