@@ -1,0 +1,47 @@
+BootStrap: docker
+From: ubuntu:18.04
+
+%post
+    # install packages - set up to use centos and powertools then grab everything
+       apt-get update
+    apt-get install -q -y \
+        at \
+        python-pip \
+        graphviz \
+        python-jinja2 \
+        python-pygraphviz \
+        python-gtk2 \
+        sqlite3 \
+        pep8 \
+        wget \
+        gfortran \
+        pcregrep \
+        lxterminal \
+        tidy \
+        python-requests \
+        python-virtualenv
+    pip install \
+        mock \
+        pytest-tap
+    
+    # install cylc and rose
+    wget -O cylc.tar.gz "https://github.com/cylc/cylc-flow/archive/refs/tags/7.9.8.tar.gz"
+    wget -O rose.tar.gz "https://github.com/metomi/rose/archive/refs/tags/2019.01.8.tar.gz"
+    mkdir -p /metomi/cylc
+    tar -xzC /metomi/cylc --strip-components=1 -f cylc.tar.gz
+    rm cylc.tar.gz
+    mkdir -p /metomi/rose
+    tar -xzC /metomi/rose --strip-components=1 -f rose.tar.gz
+    rm rose.tar.gz
+    cd /metomi/cylc
+    make version
+    export PATH=/metomi/rose/bin:/metomi/cylc/bin:$PATH
+
+%test
+    cylc check-software
+
+%environment
+    export PATH=/metomi/rose/bin:/metomi/cylc/bin:$PATH
+
+%runscript
+    rose edit $*
